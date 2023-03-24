@@ -29,6 +29,7 @@ export default function Router() {
       path: 'login',
       element: <LoginPage />,
     },
+
     {
       element: <SimpleLayout />,
       children: [
