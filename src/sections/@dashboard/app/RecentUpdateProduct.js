@@ -1,35 +1,76 @@
 // @mui
 import PropTypes from 'prop-types';
-import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Link,
+  Card,
+  Button,
+  Divider,
+  Typography,
+  CardHeader,
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from '@mui/material';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 // components
 import Iconify from '../../../components/iconify';
-import Scrollbar from '../../../components/scrollbar';
+// import Scrollbar from '../../../components/scrollbar';
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import React from 'react';
 
 // ----------------------------------------------------------------------
 
-AppNewsUpdate.propTypes = {
+RecentUpdateProduct.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
   list: PropTypes.array.isRequired,
 };
 
-export default function AppNewsUpdate({ title, subheader, list, ...other }) {
+export default function RecentUpdateProduct({ title, subheader, list, ...other }) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
-      <Scrollbar>
-        <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {list.map((news) => (
-            <NewsItem key={news.id} news={news} />
-          ))}
-        </Stack>
-      </Scrollbar>
-
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>S.No</TableCell>
+              <TableCell >Products</TableCell>
+              <TableCell >Price</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list.map((row) => (
+              <TableRow key={row.id} >
+                <TableCell >
+                  {row.index + 1}
+                </TableCell>
+                <TableCell >
+                  <ListItem alignItems="flex-ceter" >
+                    <ListItemAvatar>
+                      <Avatar alt={row.title} src={row.image} />
+                    </ListItemAvatar>
+                    <ListItemText primary={row.title} />
+                  </ListItem>
+                </TableCell>
+                <TableCell> $125</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Divider />
-
       <Box sx={{ p: 2, textAlign: 'right' }}>
         <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
           View all
