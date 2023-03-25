@@ -10,6 +10,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import Products from './components/Products/Products';
+import AddProduct from './components/Products/Addproduct/AddProduct';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +23,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <Products /> },
+        { path: 'products', element: <AddProduct /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
