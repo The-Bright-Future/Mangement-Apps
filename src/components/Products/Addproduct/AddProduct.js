@@ -91,13 +91,7 @@ const AddProduct = () => {
               <Button variant="contained" sx={{ mr: 2 }}>
                 Submit
               </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  variant: 'text',
-                  color: 'warning',
-                }}
-              >
+              <Button variant="contained" color="error">
                 Cancel
               </Button>
             </Grid>
