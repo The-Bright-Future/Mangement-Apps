@@ -12,6 +12,7 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import Products from './components/Products/Products';
 import AddProduct from './components/Products/Addproduct/AddProduct';
 import AddCategory from './components/Products/Category/AddCategory/AddCategory';
+import SubCategory from './components/Products/Category/SubCategory/SubCategory';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +25,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <AddCategory /> },
+        { path: 'products', element: <SubCategory /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
