@@ -13,6 +13,9 @@ import Products from './components/Products/Products';
 import AddProduct from './components/Products/Addproduct/AddProduct';
 import AddCategory from './components/Products/Category/AddCategory/AddCategory';
 import SubCategory from './components/Products/Category/SubCategory/SubCategory';
+import AddSubCategory from './components/Products/Category/SubCategory/AddSubCategory/AddSubCategory';
+import Brand from './components/Products/Brand/Brand';
+import AddBrand from './components/Products/Brand/AddBrand/AddBrand';
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +28,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <SubCategory /> },
+        { path: 'products', element: <AddBrand /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
