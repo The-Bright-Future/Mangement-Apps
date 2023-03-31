@@ -1,37 +1,18 @@
-import { Helmet } from 'react-helmet-async';
+import { Typography } from '@mui/material';
+import React from 'react';import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useState } from 'react';
-// @mui
-import {
-  Card,
-  Table,
-  Stack,
-  Paper,
-  Avatar,
-  Button,
-  Popover,
-  Checkbox,
-  TableRow,
-  MenuItem,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  IconButton,
-  TableContainer,
-  TablePagination,
-} from '@mui/material';
-// components
-import Label from '../components/label';
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
-// sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
-import USERLIST from '../_mock/user';
-
-// ----------------------------------------------------------------------
+import { Card, Table, Stack, Paper, Button, Checkbox, TableRow, TableBody, TableCell, Container, TableContainer, TablePagination, IconButton } from '@mui/material';
+import Iconify from 'src/components/iconify';
+import Scrollbar from 'src/components/scrollbar';
+import { UserListHead } from 'src/sections/@dashboard/user';
+import USERLIST from '../../_mock/user';
+import PurchaseToolbar from 'src/sections/@dashboard/user/PurchaseToolbar';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { Box } from '@mui/system';
+import BrandingWatermarkIcon from '@mui/icons-material/BrandingWatermark';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
@@ -41,7 +22,7 @@ const TABLE_HEAD = [
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
-// ----------------------------------------------------------------------
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -71,8 +52,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  const [open, setOpen] = useState(null);
+export default function PurchaseOrder() {
 
   const [page, setPage] = useState(0);
 
@@ -85,14 +65,6 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -143,28 +115,39 @@ export default function UserPage() {
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
-
   return (
     <>
+      <Box sx={{ position: "fixed", top: 300, right: 10, zIndex: 'tooltip', bgcolor: "white"}}>
+        <IconButton>
+          <BrandingWatermarkIcon/>
+        </IconButton>
+        <br/>
+        <IconButton>
+          <AddShoppingCartIcon />
+        </IconButton>
+        <br/>
+        <IconButton>
+          <AccountBalanceWalletIcon />
+        </IconButton>
+      </Box>
       <Helmet>
-        <title> User | Management</title>
+        <title> PURCHASE LIST</title>
       </Helmet>
-
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            User
-          </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
+          <Stack>
+            <Typography sx={{ mt: 2, mb: 0 }} variant="h4" gutterBottom>
+              Purchase Order Report
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+              Manage your Purchase order report
+            </Typography>
+          </Stack>
         </Stack>
-
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          <PurchaseToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 800, position: "relative", zIndex: 'modal' }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -177,38 +160,36 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const { id, name, role, status, company, isVerified } = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                         </TableCell>
-
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
                               {name}
                             </Typography>
                           </Stack>
                         </TableCell>
-
                         <TableCell align="left">{company}</TableCell>
 
                         <TableCell align="left">{role}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{isVerified ? <Typography color={"green"}>Receive</Typography> : <Typography color={"red"}>Pending</Typography>}</TableCell>
 
                         <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
+                          <IconButton>
+                            <BorderColorIcon />
                           </IconButton>
+                          <IconButton>
+                            <Iconify icon="eva:trash-2-fill" />
+                          </IconButton>
+
                         </TableCell>
                       </TableRow>
                     );
@@ -258,35 +239,6 @@ export default function UserPage() {
           />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }}/>
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }
