@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 import Contex from './Context/Contex';
 
+import { ThemeProvider } from "@material-tailwind/react";
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,7 +17,9 @@ root.render(
   <HelmetProvider>
     <Contex>
       <BrowserRouter>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </BrowserRouter>
     </Contex>
   </HelmetProvider>
